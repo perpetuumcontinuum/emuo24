@@ -127,16 +127,25 @@
   }
   .readme h3:first-of-type { margin-top: 0.5rem; }
 
+  .readme {
+    padding: 0;
+    background: transparent;
+    border: none;
+  }
+  .readme h2 { display: none; }
+
   .readme .section-block {
-    margin-top: 2.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--text-soft);
   }
-  .readme .section-block:first-of-type {
-    margin-top: 0;
-    padding-top: 0;
-    border-top: none;
-  }
+  .readme .section-block:first-of-type { margin-top: 0; }
+
   .readme .section-label {
     display: inline-block;
     font-size: 0.7rem;
@@ -145,11 +154,6 @@
     color: var(--accent);
     margin-bottom: 0.75rem;
     font-weight: 600;
-  }
-  .readme hr {
-    border: 0;
-    border-top: 1px solid var(--border);
-    margin: 2rem 0;
   }
   .readme p { margin: 0.5rem 0; }
   .readme strong { color: var(--text); }
