@@ -6,254 +6,131 @@
 <title>emuo24 — translator</title>
 <style>
   :root {
-    --bg: #ffffff;
-    --bg-soft: #f5f5f5;
-    --bg-input: #fafafa;
-    --border: #e0e0e0;
-    --text: #1a1a1a;
-    --text-soft: #666666;
-    --text-dim: #999999;
-    --accent: #0066cc;
-    --code-bg: #f0f0f0;
+    --bg: #ffffff; --bg-soft: #f5f5f5; --bg-input: #fafafa;
+    --border: #e0e0e0; --text: #1a1a1a; --text-soft: #666666;
+    --text-dim: #999999; --accent: #0066cc; --code-bg: #f0f0f0;
   }
-
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #0f0f0f;
-      --bg-soft: #1a1a1a;
-      --bg-input: #1a1a1a;
-      --border: #333333;
-      --text: #e0e0e0;
-      --text-soft: #888888;
-      --text-dim: #555555;
-      --accent: #4a9eff;
-      --code-bg: #1a1a1a;
+      --bg: #0f0f0f; --bg-soft: #1a1a1a; --bg-input: #1a1a1a;
+      --border: #333333; --text: #e0e0e0; --text-soft: #888888;
+      --text-dim: #555555; --accent: #4a9eff; --code-bg: #1a1a1a;
     }
   }
-
   html[data-theme="light"] {
-    --bg: #ffffff;
-    --bg-soft: #f5f5f5;
-    --bg-input: #fafafa;
-    --border: #e0e0e0;
-    --text: #1a1a1a;
-    --text-soft: #666666;
-    --text-dim: #999999;
-    --accent: #0066cc;
-    --code-bg: #f0f0f0;
+    --bg: #ffffff; --bg-soft: #f5f5f5; --bg-input: #fafafa;
+    --border: #e0e0e0; --text: #1a1a1a; --text-soft: #666666;
+    --text-dim: #999999; --accent: #0066cc; --code-bg: #f0f0f0;
   }
-
   html[data-theme="dark"] {
-    --bg: #0f0f0f;
-    --bg-soft: #1a1a1a;
-    --bg-input: #1a1a1a;
-    --border: #333333;
-    --text: #e0e0e0;
-    --text-soft: #888888;
-    --text-dim: #555555;
-    --accent: #4a9eff;
-    --code-bg: #1a1a1a;
+    --bg: #0f0f0f; --bg-soft: #1a1a1a; --bg-input: #1a1a1a;
+    --border: #333333; --text: #e0e0e0; --text-soft: #888888;
+    --text-dim: #555555; --accent: #4a9eff; --code-bg: #1a1a1a;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    padding: 2rem;
-    max-width: 800px;
-    margin: 0 auto;
+    background: var(--bg); color: var(--text);
+    padding: 2rem; max-width: 800px; margin: 0 auto;
     transition: background 0.2s, color 0.2s;
   }
-
   .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-    margin-bottom: 0.5rem;
+    display: flex; justify-content: space-between;
+    align-items: flex-start; gap: 1rem; margin-bottom: 0.5rem;
   }
-
   h1 { font-size: 1.5rem; color: var(--text); }
   .subtitle { color: var(--text-soft); margin-bottom: 2rem; font-size: 0.9rem; }
-
   .theme-switch {
-    display: flex;
-    gap: 0.25rem;
-    background: var(--bg-soft);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0.2rem;
-    flex-shrink: 0;
+    display: flex; gap: 0.25rem; background: var(--bg-soft);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 0.2rem; flex-shrink: 0;
   }
-
   .theme-btn {
-    background: transparent;
-    border: none;
-    padding: 0.35rem 0.6rem;
-    border-radius: 4px;
-    cursor: pointer;
-    color: var(--text-soft);
-    font-size: 0.85rem;
-    line-height: 1;
+    background: transparent; border: none; padding: 0.35rem 0.6rem;
+    border-radius: 4px; cursor: pointer; color: var(--text-soft);
+    font-size: 0.85rem; line-height: 1;
     transition: background 0.15s, color 0.15s;
   }
-
   .theme-btn:hover { color: var(--text); }
   .theme-btn.active { background: var(--bg); color: var(--text); }
-
   .tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
-
   .tab {
-    padding: 0.5rem 1rem;
-    background: var(--bg-soft);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    cursor: pointer;
-    color: var(--text-soft);
-    font-size: 0.9rem;
+    padding: 0.5rem 1rem; background: var(--bg-soft);
+    border: 1px solid var(--border); border-radius: 4px;
+    cursor: pointer; color: var(--text-soft); font-size: 0.9rem;
     transition: background 0.15s, color 0.15s, border-color 0.15s;
   }
-
   .tab:hover { color: var(--text); }
   .tab.active {
-    background: var(--bg-input);
-    color: var(--text);
+    background: var(--bg-input); color: var(--text);
     border-color: var(--accent);
   }
-
   textarea {
-    width: 100%;
-    min-height: 120px;
-    padding: 1rem;
-    background: var(--bg-input);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    color: var(--text);
-    font-family: monospace;
-    font-size: 1rem;
-    resize: vertical;
+    width: 100%; min-height: 120px; padding: 1rem;
+    background: var(--bg-input); border: 1px solid var(--border);
+    border-radius: 4px; color: var(--text);
+    font-family: monospace; font-size: 1rem; resize: vertical;
     transition: border-color 0.15s, background 0.2s, color 0.2s;
   }
-
   textarea:focus { outline: none; border-color: var(--accent); }
-
   .output {
-    margin-top: 1rem;
-    padding: 1rem;
-    background: var(--bg-input);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 1rem;
-    min-height: 60px;
-    word-wrap: break-word;
-    white-space: pre-wrap;
+    margin-top: 1rem; padding: 1rem; background: var(--bg-input);
+    border: 1px solid var(--border); border-radius: 4px;
+    font-family: monospace; font-size: 1rem; min-height: 60px;
+    word-wrap: break-word; white-space: pre-wrap;
     transition: background 0.2s, color 0.2s;
   }
-
   .label {
-    font-size: 0.8rem;
-    color: var(--text-soft);
-    margin-bottom: 0.3rem;
-    text-transform: uppercase;
+    font-size: 0.8rem; color: var(--text-soft);
+    margin-bottom: 0.3rem; text-transform: uppercase;
     letter-spacing: 0.05em;
   }
-
   .info {
-    margin-top: 2rem;
-    font-size: 0.85rem;
-    color: var(--text-soft);
-    line-height: 1.6;
+    margin-top: 2rem; font-size: 0.85rem;
+    color: var(--text-soft); line-height: 1.6;
   }
-
   .info code {
-    background: var(--code-bg);
-    padding: 0.1rem 0.3rem;
-    border-radius: 2px;
-    color: var(--text);
+    background: var(--code-bg); padding: 0.1rem 0.3rem;
+    border-radius: 2px; color: var(--text);
   }
-
   .readme {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    background: var(--bg-soft);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    font-size: 0.85rem;
-    line-height: 1.7;
-    color: var(--text-soft);
+    margin-top: 2rem; padding: 1.5rem; background: var(--bg-soft);
+    border: 1px solid var(--border); border-radius: 6px;
+    font-size: 0.85rem; line-height: 1.7; color: var(--text-soft);
   }
-
   .readme h2 {
-    font-size: 1rem;
-    color: var(--text);
-    margin-bottom: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-size: 1rem; color: var(--text); margin-bottom: 0.75rem;
+    text-transform: uppercase; letter-spacing: 0.05em;
   }
-
   .readme h3 {
-    font-size: 0.9rem;
-    color: var(--text);
-    margin: 1.25rem 0 0.4rem;
+    font-size: 0.9rem; color: var(--text); margin: 1.25rem 0 0.4rem;
   }
-
   .readme h3:first-of-type { margin-top: 0.5rem; }
-
   .readme p { margin: 0.5rem 0; }
   .readme strong { color: var(--text); }
-
   .readme code {
-    background: var(--code-bg);
-    padding: 0.1rem 0.35rem;
-    border-radius: 3px;
-    color: var(--text);
-    font-family: monospace;
-    font-size: 0.9em;
+    background: var(--code-bg); padding: 0.1rem 0.35rem;
+    border-radius: 3px; color: var(--text);
+    font-family: monospace; font-size: 0.9em;
   }
-
-  .readme ul {
-    margin: 0.5rem 0 0.5rem 1.25rem;
-    padding: 0;
-  }
-
+  .readme ul { margin: 0.5rem 0 0.5rem 1.25rem; padding: 0; }
   .readme li { margin: 0.2rem 0; }
-
   .readme table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 0.5rem 0;
-    font-size: 0.85rem;
+    width: 100%; border-collapse: collapse;
+    margin: 0.5rem 0; font-size: 0.85rem;
   }
-
-  .readme th,
-  .readme td {
-    text-align: left;
-    padding: 0.35rem 0.5rem;
+  .readme th, .readme td {
+    text-align: left; padding: 0.35rem 0.5rem;
     border-bottom: 1px solid var(--border);
   }
-
   .readme th {
-    color: var(--text);
-    font-weight: 600;
+    color: var(--text); font-weight: 600;
     border-bottom: 1px solid var(--text-soft);
   }
-
-  .readme .divider {
-    margin: 1.25rem 0;
-    border: 0;
-    border-top: 1px solid var(--border);
-  }
-
   .footer {
-    margin-top: 3rem;
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    text-align: center;
+    margin-top: 3rem; font-size: 0.8rem;
+    color: var(--text-dim); text-align: center;
   }
-
   .footer a { color: var(--accent); text-decoration: none; }
   .footer a:hover { text-decoration: underline; }
 </style>
@@ -388,12 +265,19 @@ let dict = {};
 let reverseDict = {};
 let mode = "en";
 
+const PRONOUNS = {
+  "i": "a", "you": "p", "we": "i",
+  "he": "o", "she": "n", "it": "m"
+};
+
 const LOGIC = { "and": "y", "or": "l", "not": "s", "implies": "k" };
+
 const TENSE = {
   "was": "t", "were": "t",
   "is": "e", "are": "e", "am": "e", "be": "e",
   "will": "u", "shall": "u"
 };
+
 const DIGITS = {
   "0": "aa", "1": "ae", "2": "ai", "3": "ao", "4": "au",
   "5": "ay", "6": "ap", "7": "at", "8": "ak", "9": "as"
@@ -412,14 +296,35 @@ const STOP = new Set([
   "just","only","even","also","too","very"
 ]);
 
-// ---------- Theme ----------
+const CONTRACTIONS = [
+  [/\bisn't\b/gi, "is not"], [/\baren't\b/gi, "are not"],
+  [/\bwasn't\b/gi, "was not"], [/\bweren't\b/gi, "were not"],
+  [/\bdon't\b/gi, "do not"], [/\bdoesn't\b/gi, "does not"],
+  [/\bdidn't\b/gi, "did not"], [/\bcan't\b/gi, "can not"],
+  [/\bwon't\b/gi, "will not"], [/\bshan't\b/gi, "shall not"],
+  [/\bain't\b/gi, "is not"], [/\bi'm\b/gi, "i am"],
+  [/\bi've\b/gi, "i have"], [/\bi'll\b/gi, "i will"],
+  [/\bi'd\b/gi, "i would"], [/\bit's\b/gi, "it is"],
+  [/\bthat's\b/gi, "that is"], [/\bthere's\b/gi, "there is"],
+  [/\bhe's\b/gi, "he is"], [/\bshe's\b/gi, "she is"],
+  [/\bwe're\b/gi, "we are"], [/\bthey're\b/gi, "they are"],
+  [/\byou're\b/gi, "you are"], [/\bwe've\b/gi, "we have"],
+  [/\bthey've\b/gi, "they have"], [/\byou've\b/gi, "you have"],
+  [/\bwe'll\b/gi, "we will"], [/\bthey'll\b/gi, "they will"],
+  [/\byou'll\b/gi, "you will"], [/\blet's\b/gi, "let us"]
+];
+
+function expandContractions(text) {
+  for (const [pattern, repl] of CONTRACTIONS) {
+    text = text.replace(pattern, repl);
+  }
+  return text;
+}
+
 function applyTheme(theme) {
   const html = document.documentElement;
-  if (theme === "system") {
-    html.removeAttribute("data-theme");
-  } else {
-    html.setAttribute("data-theme", theme);
-  }
+  if (theme === "system") html.removeAttribute("data-theme");
+  else html.setAttribute("data-theme", theme);
   document.querySelectorAll(".theme-btn").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.theme === theme);
   });
@@ -428,7 +333,6 @@ function applyTheme(theme) {
 function initTheme() {
   const saved = localStorage.getItem("emuo24-theme") || "system";
   applyTheme(saved);
-
   document.querySelectorAll(".theme-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const t = btn.dataset.theme;
@@ -436,14 +340,12 @@ function initTheme() {
       applyTheme(t);
     });
   });
-
   window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
     const saved = localStorage.getItem("emuo24-theme") || "system";
     if (saved === "system") applyTheme("system");
   });
 }
 
-// ---------- Dictionary ----------
 async function loadDict() {
   try {
     const res = await fetch("core.json");
@@ -464,6 +366,7 @@ async function loadDict() {
 }
 
 function toLM(text) {
+  text = expandContractions(text);
   const tokens = text.toLowerCase().match(/[a-z]+|\d+/g) || [];
   const out = [];
   for (const tok of tokens) {
@@ -471,6 +374,7 @@ function toLM(text) {
       out.push(tok.split("").map(d => DIGITS[d] || `[${d}]`).join(" "));
       continue;
     }
+    if (PRONOUNS[tok]) { out.push(PRONOUNS[tok]); continue; }
     if (LOGIC[tok]) { out.push(LOGIC[tok]); continue; }
     if (TENSE[tok]) { out.push(TENSE[tok]); continue; }
     if (STOP.has(tok)) continue;
