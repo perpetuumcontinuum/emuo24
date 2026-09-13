@@ -126,6 +126,31 @@
     font-size: 0.9rem; color: var(--text); margin: 1.25rem 0 0.4rem;
   }
   .readme h3:first-of-type { margin-top: 0.5rem; }
+
+  .readme .section-block {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .readme .section-block:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+  .readme .section-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+  .readme hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
   .readme p { margin: 0.5rem 0; }
   .readme strong { color: var(--text); }
   .readme code {
@@ -262,6 +287,9 @@
 <div class="readme">
   <h2>About emuo24</h2>
 
+<div class="section-block">
+  <span class="section-label">INTRO</span>
+
   <p>emuo24 is a minimal logical language built from <strong>24 universal blocks</strong>: 13 letters, 10 digits, 1 logic operator. It is not a replacement for natural languages — it is a tool for <strong>compact communication, logical reasoning, fast typing, and machine-friendly syntax</strong>.</p>
 
   <h3>Why</h3>
@@ -272,6 +300,10 @@
     <li><strong>Logical by design</strong> — operators <code>s</code>, <code>y</code>, <code>l</code>, <code>k</code> give you formal logic built in.</li>
   </ul>
 
+  </div>
+
+<div class="section-block">
+  <span class="section-label">STRUCTURE</span>
   <h3>The 24 blocks</h3>
   <p><strong>Letters (13):</strong> vowels <code>a e i o u</code>, consonants <code>p t k s m n l y</code>.</p>
   <p><strong>Digits (10):</strong> <code>0 1 2 3 4 5 6 7 8 9</code>, each with a 2-letter code.</p>
@@ -286,6 +318,10 @@
     <tr><td>Digits</td><td><code>aa</code>–<code>as</code> = 0–9</td></tr>
   </table>
 
+  </div>
+
+<div class="section-block">
+  <span class="section-label">RULES</span>
   <h3>Rules (2)</h3>
   <ul>
     <li><strong>SVO order</strong> — subject, verb, object. Always.</li>
@@ -321,6 +357,10 @@
   </ul>
   <p>The only thing that matters is: <em>say what you mean.</em> Everything else is style.</p>
 
+  </div>
+
+<div class="section-block">
+  <span class="section-label">LOGIC</span>
   <h3>Natural vs logical</h3>
   <p>emuo24 gives the speaker a choice:</p>
   <ul>
@@ -333,6 +373,10 @@
   <p><code>k</code> is implication (<code>→</code>). It connects two judgments: <code>A k B</code> means "A implies B" / "if A then B" / "A therefore B".</p>
   <p>Natural language has many words for this — <em>if…then, means, therefore, so, thus, hence</em>. In emuo24 you can either use those words from the dictionary (natural style), or collapse them all into one <code>k</code> (logical style). One operator replaces five or more conjunctions.</p>
 
+  </div>
+
+<div class="section-block">
+  <span class="section-label">REFERENCE</span>
   <h3>Numbers</h3>
   <p>Numbers are written digit by digit:</p>
   <table>
@@ -531,6 +575,10 @@
   <p>The dictionary is built from word frequency data (wordfreq, top ~50k English words), filtered for stop words, and assigned codes by frequency — most frequent get shortest codes.</p>
   <p>Total: <strong>305 293 words</strong>.</p>
 
+  </div>
+
+<div class="section-block">
+  <span class="section-label">PROJECT</span>
   <h3>Roadmap</h3>
   <p><strong>Done</strong></p>
   <ul>
@@ -570,6 +618,8 @@
 
   <h3>Philosophy</h3>
   <p><em>The language is not smarter than the speaker. It is a tool. The speaker decides when to think logically and when to speak in words.</em></p>
+</div>
+
 </div>
 
 <div class="donate">
