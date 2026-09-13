@@ -205,10 +205,13 @@
     <h1>emuo24</h1>
     <div class="subtitle">24 blocks. 2 rules. No exceptions.</div>
   </div>
-  <div class="theme-switch">
-    <button class="theme-btn" data-theme="system" title="System">auto</button>
-    <button class="theme-btn" data-theme="light" title="Light">light</button>
-    <button class="theme-btn" data-theme="dark" title="Dark">dark</button>
+  <div style="display:flex; gap:0.5rem; align-items:center; flex-shrink:0;">
+    <button id="site-translate" style="background: var(--bg-soft); border: 1px solid var(--border); padding: 0.35rem 0.7rem; border-radius: 6px; font-size: 0.85rem; cursor: pointer; color: var(--text-soft);">Translate site</button>
+    <div class="theme-switch">
+      <button class="theme-btn" data-theme="system" title="System">auto</button>
+      <button class="theme-btn" data-theme="light" title="Light">light</button>
+      <button class="theme-btn" data-theme="dark" title="Dark">dark</button>
+    </div>
   </div>
 </div>
 
@@ -722,6 +725,77 @@ document.getElementById("quote-translate").addEventListener("click", () => {
   mode = "en";
   update();
   document.getElementById("input").scrollIntoView({ behavior: "smooth", block: "center" });
+});
+
+// ---------- Site translation ----------
+let siteTranslated = false;
+const translatableSelectors = [".readme", ".info", ".quote", ".footer", ".donate", ".about"];
+
+function translateNode(node) {
+  if (node.nodeType === Node.TEXT_NODE) {
+    const text = node.textContent.trim();
+    if (!text || text.length < 2) return;
+    if (!node.parentElement) return;
+    const tag = node.parentElement.tagName;
+    if (["CODE", "PRE", "SCRIPT", "STYLE", "BUTTON"].includes(tag)) return;
+    if (node.parentElement.dataset.translated === "1") return;
+
+    const tokens = text.toLowerCase().match(/[a-z]+|\d+/g) || [];
+    if (!tokens.length) return;
+
+    const out = [];
+    for (const tok of tokens) {
+      if (/^\d+$/.test(tok)) {
+        out.push(tok.split("").map(d => DIGITS[d] || d).join(" "));
+        continue;
+      }
+      if (PRONOUNS[tok]) { out.push(PRONOUNS[tok]); continue; }
+      if (LOGIC[tok]) { out.push(LOGIC[tok]); continue; }
+      if (TENSE[tok]) { out.push(TENSE[tok]); continue; }
+      if (STOP.has(tok)) continue;
+      if (dict[tok]) out.push(dict[tok]);
+      else out.push(tok);
+    }
+    const translated = out.join(" ");
+
+    if (!node.parentElement.dataset.originalText) {
+      node.parentElement.dataset.originalText = node.textContent;
+    }
+    node.textContent = translated;
+    node.parentElement.dataset.translated = "1";
+  } else if (node.nodeType === Node.ELEMENT_NODE) {
+    if (["CODE", "PRE", "SCRIPT", "STYLE", "BUTTON", "INPUT", "TEXTAREA"].includes(node.tagName)) return;
+    for (const child of Array.from(node.childNodes)) {
+      translateNode(child);
+    }
+  }
+}
+
+function translateSite() {
+  for (const sel of translatableSelectors) {
+    document.querySelectorAll(sel).forEach(el => translateNode(el));
+  }
+}
+
+function restoreSite() {
+  document.querySelectorAll("[data-original-text]").forEach(el => {
+    el.textContent = el.dataset.originalText;
+    delete el.dataset.originalText;
+    delete el.dataset.translated;
+  });
+}
+
+document.getElementById("site-translate").addEventListener("click", () => {
+  const btn = document.getElementById("site-translate");
+  if (!siteTranslated) {
+    translateSite();
+    siteTranslated = true;
+    btn.textContent = "Translate to English";
+  } else {
+    restoreSite();
+    siteTranslated = false;
+    btn.textContent = "Translate site";
+  }
 });
 
 initTheme();
