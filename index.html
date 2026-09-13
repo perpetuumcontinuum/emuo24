@@ -507,12 +507,19 @@ function update() {
 
 document.querySelectorAll(".tab").forEach(tab => {
   tab.addEventListener("click", () => {
+    // Skip if clicking the already-active tab
+    if (tab.classList.contains("active")) return;
+
     document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
     tab.classList.add("active");
     mode = tab.dataset.mode;
+
+    // Clear both fields on direction change
+    document.getElementById("input").value = "";
+    document.getElementById("output").textContent = "—";
+
     document.getElementById("input").placeholder =
       mode === "en" ? "Type English..." : "Type emuo24...";
-    update();
   });
 });
 
