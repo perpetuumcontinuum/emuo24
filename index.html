@@ -131,6 +131,38 @@
   .readme .todo { color: var(--text-soft); }
   .readme a { color: var(--accent); text-decoration: none; }
   .readme a:hover { text-decoration: underline; }
+  .quote {
+    margin-top: 2rem; padding: 1.5rem;
+    background: var(--bg-soft); border: 1px solid var(--border);
+    border-radius: 6px; font-size: 0.9rem;
+    line-height: 1.8; color: var(--text-soft);
+  }
+  .quote h3 {
+    font-size: 0.95rem; color: var(--text);
+    margin-bottom: 0.75rem; text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .quote .source {
+    font-size: 0.8rem; color: var(--text-dim);
+    margin-top: 1rem; font-style: italic;
+  }
+  .quote .actions {
+    display: flex; gap: 0.5rem; margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+  .quote button {
+    padding: 0.4rem 0.9rem;
+    background: var(--bg-input); border: 1px solid var(--border);
+    border-radius: 4px; cursor: pointer;
+    color: var(--text); font-size: 0.85rem;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .quote button:hover {
+    border-color: var(--accent); color: var(--accent);
+  }
+  .quote button.copied {
+    border-color: #4caf50; color: #4caf50;
+  }
   .footer {
     margin-top: 3rem; font-size: 0.8rem;
     color: var(--text-dim); text-align: center;
@@ -178,6 +210,16 @@
   <p><code>Rain implies umbrella</code> → <code>aoon k onnk</code></p>
   <p><code>If rain then umbrella</code> → <code>pa aoon aei onnk</code></p>
   <p><code>I have 5 cats</code> → <code>a ay ansa</code></p>
+</div>
+
+<div class="quote">
+  <h3>Tao Te Ching — Chapter 36</h3>
+  <p id="quote-text">To shrink something, you must first allow it to expand. To weaken something, you must first allow it to become strong. To tear something down, you must first allow it to rise. To take something away, you must first give it. This is called subtle clarity. The soft and weak overcome the hard and strong. Just as fish cannot leave the deep, a state should not show its tools to the people.</p>
+  <p class="source">— Laozi, Tao Te Ching, Chapter 36</p>
+  <div class="actions">
+    <button id="quote-copy">Copy</button>
+    <button id="quote-translate">Translate in emuo24</button>
+  </div>
 </div>
 
 <div class="readme">
@@ -453,6 +495,34 @@ document.querySelectorAll(".tab").forEach(tab => {
 });
 
 document.getElementById("input").addEventListener("input", update);
+
+// Quote buttons
+document.getElementById("quote-copy").addEventListener("click", async () => {
+  const text = document.getElementById("quote-text").textContent;
+  try {
+    await navigator.clipboard.writeText(text);
+    const btn = document.getElementById("quote-copy");
+    btn.textContent = "Copied!";
+    btn.classList.add("copied");
+    setTimeout(() => {
+      btn.textContent = "Copy";
+      btn.classList.remove("copied");
+    }, 1500);
+  } catch (e) {
+    console.warn("Copy failed", e);
+  }
+});
+
+document.getElementById("quote-translate").addEventListener("click", () => {
+  const text = document.getElementById("quote-text").textContent;
+  document.getElementById("input").value = text;
+  // switch to EN -> LM mode
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.querySelector('.tab[data-mode="en"]').classList.add("active");
+  mode = "en";
+  update();
+  document.getElementById("input").scrollIntoView({ behavior: "smooth", block: "center" });
+});
 
 initTheme();
 loadDict().then(update);
