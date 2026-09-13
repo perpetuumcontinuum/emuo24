@@ -127,12 +127,22 @@
     color: var(--text); font-weight: 600;
     border-bottom: 1px solid var(--text-soft);
   }
+  .readme .done { color: #4caf50; }
+  .readme .todo { color: var(--text-soft); }
+  .readme a { color: var(--accent); text-decoration: none; }
+  .readme a:hover { text-decoration: underline; }
   .footer {
     margin-top: 3rem; font-size: 0.8rem;
     color: var(--text-dim); text-align: center;
   }
   .footer a { color: var(--accent); text-decoration: none; }
   .footer a:hover { text-decoration: underline; }
+  .donate {
+    margin-top: 1.5rem; padding: 1rem;
+    background: var(--bg-soft); border: 1px solid var(--border);
+    border-radius: 6px; font-size: 0.85rem;
+    color: var(--text-soft); text-align: center;
+  }
 </style>
 </head>
 <body>
@@ -239,22 +249,50 @@
   <p>The dictionary is built from word frequency data (wordfreq, top ~50k English words), filtered for stop words, and assigned codes by frequency — most frequent get shortest codes.</p>
   <p>Total: <strong>305 293 words</strong>.</p>
 
-  <h3>Status</h3>
-  <table>
-    <tr><th>Component</th><th>Status</th></tr>
-    <tr><td>Alphabet</td><td>done</td></tr>
-    <tr><td>Digits</td><td>done</td></tr>
-    <tr><td>Logic operators</td><td>done</td></tr>
-    <tr><td>Rules</td><td>done</td></tr>
-    <tr><td>Dictionary</td><td>done (305 293 words)</td></tr>
-    <tr><td>Translator</td><td>done</td></tr>
-    <tr><td>Website</td><td>done</td></tr>
-    <tr><td>Keyboard</td><td>not started</td></tr>
-    <tr><td>Native glyphs</td><td>not started</td></tr>
-  </table>
+  <h3>Roadmap</h3>
+  <p><strong>Done</strong></p>
+  <ul>
+    <li><span class="done">✅</span> Alphabet, digits, logic operators</li>
+    <li><span class="done">✅</span> Rules (SVO, max 6 letters)</li>
+    <li><span class="done">✅</span> Dictionary (305 293 words)</li>
+    <li><span class="done">✅</span> Translator (Python CLI)</li>
+    <li><span class="done">✅</span> Website translator (English ↔ emuo24)</li>
+    <li><span class="done">✅</span> GitHub Pages site</li>
+    <li><span class="done">✅</span> Unlicense (public domain)</li>
+  </ul>
+  <p><strong>Planned</strong></p>
+  <ul>
+    <li><span class="todo">⬜</span> Anki deck (CSV → .apkg)</li>
+    <li><span class="todo">⬜</span> Quizlet set (CSV import)</li>
+    <li><span class="todo">⬜</span> CSV generator from <code>core.json</code></li>
+    <li><span class="todo">⬜</span> Browser extension — Firefox (free to publish)</li>
+    <li><span class="todo">⬜</span> Browser extension — Chrome ($5 one-time dev fee)</li>
+    <li><span class="todo">⬜</span> Android translator app (Google Play one-time dev fee)</li>
+    <li><span class="todo">⬜</span> iOS translator app (Apple Developer yearly fee)</li>
+    <li><span class="todo">⬜</span> Community extension slot</li>
+    <li><span class="todo">⬜</span> Open Graph image for link previews</li>
+    <li><span class="todo">⬜</span> Native glyphs (optional, far future)</li>
+    <li><span class="todo">⬜</span> Custom keyboard (optional, far future)</li>
+  </ul>
+
+  <h3>Contribute</h3>
+  <p>emuo24 welcomes any kind of contribution:</p>
+  <ul>
+    <li><strong>Ideas</strong> — open an issue if you have a suggestion or a remark.</li>
+    <li><strong>Extensions</strong> — if you want to build an extension we don't have, open an issue or send a pull request.</li>
+    <li><strong>Decks</strong> — if you build an Anki / Quizlet deck, share the link and we'll add it to the site.</li>
+    <li><strong>Translations</strong> — if you want to translate the site or README, open an issue.</li>
+    <li><strong>Bug reports</strong> — open an issue with steps to reproduce.</li>
+  </ul>
+  <p>There is no formal process. Just open an issue and say what you want to do.</p>
 
   <h3>Philosophy</h3>
   <p><em>The language is not smarter than the speaker. It is a tool. The speaker decides when to think logically and when to speak in words.</em></p>
+</div>
+
+<div class="donate">
+  If you find emuo24 useful and want to support the project, donations are welcome.
+  Donation links will be added here once the project is more established.
 </div>
 
 <div class="footer">
