@@ -4,6 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>emuo24 — translator</title>
+
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+<meta name="description" content="emuo24 — a minimal logical language built from 24 universal blocks: 13 letters, 10 digits, 1 logic operator. SVO. Max 6 letters.">
+<meta name="theme-color" content="#2d1b4e">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="emuo24 — 24 blocks. 2 rules. No exceptions.">
+<meta property="og:description" content="A minimal logical language. 13 letters, 10 digits, 1 logic operator. SVO. Max 6 letters. Free, open, public domain.">
+<meta property="og:image" content="https://perpetuumcontinuum.github.io/emuo24/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://perpetuumcontinuum.github.io/emuo24/">
+<meta property="og:site_name" content="emuo24">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="emuo24 — 24 blocks. 2 rules. No exceptions.">
+<meta name="twitter:description" content="A minimal logical language. 13 letters, 10 digits, 1 logic operator. SVO. Max 6 letters.">
+<meta name="twitter:image" content="https://perpetuumcontinuum.github.io/emuo24/og-image.png">
+
 <style>
   :root {
     --bg: #ffffff; --bg-soft: #f5f5f5; --bg-input: #fafafa;
@@ -177,6 +197,7 @@
   }
 </style>
 </head>
+
 <body>
 
 <div class="header">
@@ -340,6 +361,7 @@
 <div class="footer">
   emuo24 — 13 letters, 10 digits, 1 logic operator. SVO. Max 6 letters.
 </div>
+
 <script>
 let dict = {};
 let reverseDict = {};
@@ -496,7 +518,6 @@ document.querySelectorAll(".tab").forEach(tab => {
 
 document.getElementById("input").addEventListener("input", update);
 
-// Quote buttons
 document.getElementById("quote-copy").addEventListener("click", async () => {
   const text = document.getElementById("quote-text").textContent;
   try {
@@ -516,7 +537,6 @@ document.getElementById("quote-copy").addEventListener("click", async () => {
 document.getElementById("quote-translate").addEventListener("click", () => {
   const text = document.getElementById("quote-text").textContent;
   document.getElementById("input").value = text;
-  // switch to EN -> LM mode
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
   document.querySelector('.tab[data-mode="en"]').classList.add("active");
   mode = "en";
