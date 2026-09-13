@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>emuo24 — translator</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-soft: #f5f5f5;
+    --bg-input: #fafafa;
+    --border: #e0e0e0;
+    --text: #1a1a1a;
+    --text-soft: #666666;
+    --text-dim: #999999;
+    --accent: #0066cc;
+    --code-bg: #f0f0f0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f0f0f;
+      --bg-soft: #1a1a1a;
+      --bg-input: #1a1a1a;
+      --border: #333333;
+      --text: #e0e0e0;
+      --text-soft: #888888;
+      --text-dim: #555555;
+      --accent: #4a9eff;
+      --code-bg: #1a1a1a;
+    }
+  }
+
+  html[data-theme="light"] {
+    --bg: #ffffff;
+    --bg-soft: #f5f5f5;
+    --bg-input: #fafafa;
+    --border: #e0e0e0;
+    --text: #1a1a1a;
+    --text-soft: #666666;
+    --text-dim: #999999;
+    --accent: #0066cc;
+    --code-bg: #f0f0f0;
+  }
+
+  html[data-theme="dark"] {
+    --bg: #0f0f0f;
+    --bg-soft: #1a1a1a;
+    --bg-input: #1a1a1a;
+    --border: #333333;
+    --text: #e0e0e0;
+    --text-soft: #888888;
+    --text-dim: #555555;
+    --accent: #4a9eff;
+    --code-bg: #1a1a1a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  h1 { font-size: 1.5rem; color: var(--text); }
+  .subtitle { color: var(--text-soft); margin-bottom: 2rem; font-size: 0.9rem; }
+
+  .theme-switch {
+    display: flex;
+    gap: 0.25rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.2rem;
+    flex-shrink: 0;
+  }
+
+  .theme-btn {
+    background: transparent;
+    border: none;
+    padding: 0.35rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--text-soft);
+    font-size: 0.85rem;
+    line-height: 1;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .theme-btn:hover { color: var(--text); }
+  .theme-btn.active { background: var(--bg); color: var(--text); }
+
+  .tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+
+  .tab {
+    padding: 0.5rem 1rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--text-soft);
+    font-size: 0.9rem;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .tab:hover { color: var(--text); }
+  .tab.active {
+    background: var(--bg-input);
+    color: var(--text);
+    border-color: var(--accent);
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 1rem;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: monospace;
+    font-size: 1rem;
+    resize: vertical;
+    transition: border-color 0.15s, background 0.2s, color 0.2s;
+  }
+
+  textarea:focus { outline: none; border-color: var(--accent); }
+
+  .output {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 1rem;
+    min-height: 60px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .label {
+    font-size: 0.8rem;
+    color: var(--text-soft);
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .info {
+    margin-top: 2rem;
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    line-height: 1.6;
+  }
+
+  .info code {
+    background: var(--code-bg);
+    padding: 0.1rem 0.3rem;
+    border-radius: 2px;
+    color: var(--text);
+  }
+
+  .readme {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--text-soft);
+  }
+
+  .readme h2 {
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .readme h3 {
+    font-size: 0.9rem;
+    color: var(--text);
+    margin: 1.25rem 0 0.4rem;
+  }
+
+  .readme h3:first-of-type { margin-top: 0.5rem; }
+
+  .readme p { margin: 0.5rem 0; }
+  .readme strong { color: var(--text); }
+
+  .readme code {
+    background: var(--code-bg);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    color: var(--text);
+    font-family: monospace;
+    font-size: 0.9em;
+  }
+
+  .readme ul {
+    margin: 0.5rem 0 0.5rem 1.25rem;
+    padding: 0;
+  }
+
+  .readme li { margin: 0.2rem 0; }
+
+  .readme table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+    font-size: 0.85rem;
+  }
+
+  .readme th,
+  .readme td {
+    text-align: left;
+    padding: 0.35rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .readme th {
+    color: var(--text);
+    font-weight: 600;
+    border-bottom: 1px solid var(--text-soft);
+  }
+
+  .readme .divider {
+    margin: 1.25rem 0;
+    border: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer {
+    margin-top: 3rem;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>emuo24</h1>
+    <div class="subtitle">24 blocks. 2 rules. No exceptions.</div>
+  </div>
+  <div class="theme-switch">
+    <button class="theme-btn" data-theme="system" title="System">auto</button>
+    <button class="theme-btn" data-theme="light" title="Light">light</button>
+    <button class="theme-btn" data-theme="dark" title="Dark">dark</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-mode="en">English → emuo24</div>
+  <div class="tab" data-mode="lm">emuo24 → English</div>
+</div>
+
+<div class="label">Input</div>
+<textarea id="input" placeholder="Type here..."></textarea>
+
+<div class="label" style="margin-top: 1rem;">Output</div>
+<div class="output" id="output">—</div>
+
+<div class="info">
+  <p><strong>Try:</strong></p>
+  <p><code>I love you</code> → <code>a eue p</code></p>
+  <p><code>She is my sister</code> → <code>n e po auak</code></p>
+  <p><code>You and I or they</code> → <code>p y a l an</code></p>
+  <p><code>Rain implies umbrella</code> → <code>aoon k onnk</code></p>
+  <p><code>If rain then umbrella</code> → <code>pa aoon aei onnk</code></p>
+  <p><code>I have 5 cats</code> → <code>a ay ansa</code></p>
+</div>
+
+<div class="readme">
+  <h2>About emuo24</h2>
+
+  <p>emuo24 is a minimal logical language built from <strong>24 universal blocks</strong>: 13 letters, 10 digits, 1 logic operator. It is not a replacement for natural languages — it is a tool for <strong>compact communication, logical reasoning, fast typing, and machine-friendly syntax</strong>.</p>
+
+  <h3>Why</h3>
+  <ul>
+    <li><strong>Saves time and keystrokes</strong> — frequent words are 1–2 letters.</li>
+    <li><strong>Saves bytes</strong> — text is 3–4× smaller than English.</li>
+    <li><strong>Faster reading</strong> — short words, no morphology, no exceptions.</li>
+    <li><strong>Logical by design</strong> — operators <code>s</code>, <code>y</code>, <code>l</code>, <code>k</code> give you formal logic built in.</li>
+  </ul>
+
+  <h3>The 24 blocks</h3>
+  <p><strong>Letters (13):</strong> vowels <code>a e i o u</code>, consonants <code>p t k s m n l y</code>.</p>
+  <p><strong>Digits (10):</strong> <code>0 1 2 3 4 5 6 7 8 9</code>, each with a 2-letter code.</p>
+  <p><strong>Logic (4):</strong> <code>s</code> = not (¬), <code>y</code> = and (∧), <code>l</code> = or (∨), <code>k</code> = implies (→).</p>
+
+  <h3>Reserved codes (23)</h3>
+  <table>
+    <tr><th>Type</th><th>Codes</th></tr>
+    <tr><td>Pronouns</td><td><code>a</code> i, <code>p</code> you, <code>i</code> we, <code>o</code> he, <code>m</code> it, <code>n</code> she</td></tr>
+    <tr><td>Tense</td><td><code>t</code> was, <code>e</code> is, <code>u</code> will</td></tr>
+    <tr><td>Logic</td><td><code>s</code> not, <code>y</code> and, <code>l</code> or, <code>k</code> implies</td></tr>
+    <tr><td>Digits</td><td><code>aa</code>–<code>as</code> = 0–9</td></tr>
+  </table>
+
+  <h3>Rules (2)</h3>
+  <ul>
+    <li><strong>SVO order</strong> — subject, verb, object. Always.</li>
+    <li><strong>Max word length = 6 letters.</strong></li>
+  </ul>
+  <p>That's it. No exceptions.</p>
+
+  <h3>Properties</h3>
+  <ul>
+    <li>No morphology (no cases, gender, number)</li>
+    <li>No prepositions</li>
+    <li>No conjunctions (use order or <code>y</code>/<code>l</code>)</li>
+    <li>No suffixes</li>
+    <li>Words never change form</li>
+  </ul>
+
+  <h3>Natural vs logical</h3>
+  <p>emuo24 gives the speaker a choice:</p>
+  <ul>
+    <li><strong>Natural:</strong> <code>if rain then umbrella</code></li>
+    <li><strong>Logical:</strong> <code>rain k umbrella</code></li>
+  </ul>
+  <p>Both are valid. Both mean the same. The language does not force logic — it offers it.</p>
+
+  <h3>The operator <code>k</code></h3>
+  <p><code>k</code> is implication (<code>→</code>). It connects two judgments: <code>A k B</code> means "A implies B" / "if A then B" / "A therefore B".</p>
+  <p>Natural language has many words for this — <em>if…then, means, therefore, so, thus, hence</em>. In emuo24 you can either use those words from the dictionary (natural style), or collapse them all into one <code>k</code> (logical style). One operator replaces five or more conjunctions.</p>
+
+  <h3>Numbers</h3>
+  <p>Numbers are written digit by digit:</p>
+  <table>
+    <tr><th>Number</th><th>emuo24</th></tr>
+    <tr><td>5</td><td>ay</td></tr>
+    <tr><td>25</td><td>ai ay</td></tr>
+    <tr><td>2024</td><td>ai aa ai au</td></tr>
+    <tr><td>123456</td><td>ae ai ao au ay ap</td></tr>
+  </table>
+
+  <h3>Dictionary</h3>
+  <p>The dictionary is built from word frequency data (wordfreq, top ~50k English words), filtered for stop words, and assigned codes by frequency — most frequent get shortest codes.</p>
+  <p>Total: <strong>305 293 words</strong>.</p>
+
+  <h3>Status</h3>
+  <table>
+    <tr><th>Component</th><th>Status</th></tr>
+    <tr><td>Alphabet</td><td>done</td></tr>
+    <tr><td>Digits</td><td>done</td></tr>
+    <tr><td>Logic operators</td><td>done</td></tr>
+    <tr><td>Rules</td><td>done</td></tr>
+    <tr><td>Dictionary</td><td>done (305 293 words)</td></tr>
+    <tr><td>Translator</td><td>done</td></tr>
+    <tr><td>Website</td><td>done</td></tr>
+    <tr><td>Keyboard</td><td>not started</td></tr>
+    <tr><td>Native glyphs</td><td>not started</td></tr>
+  </table>
+
+  <h3>Philosophy</h3>
+  <p><em>The language is not smarter than the speaker. It is a tool. The speaker decides when to think logically and when to speak in words.</em></p>
+</div>
+
+<div class="footer">
+  emuo24 — 13 letters, 10 digits, 1 logic operator. SVO. Max 6 letters.
+</div>
+<script>
+let dict = {};
+let reverseDict = {};
+let mode = "en";
+
+const LOGIC = { "and": "y", "or": "l", "not": "s", "implies": "k" };
+const TENSE = {
+  "was": "t", "were": "t",
+  "is": "e", "are": "e", "am": "e", "be": "e",
+  "will": "u", "shall": "u"
+};
+const DIGITS = {
+  "0": "aa", "1": "ae", "2": "ai", "3": "ao", "4": "au",
+  "5": "ay", "6": "ap", "7": "at", "8": "ak", "9": "as"
+};
+
+const STOP = new Set([
+  "a","an","the","of","to","in","on","at","by","with","from",
+  "into","onto","upon","over","under","above","below",
+  "between","among","through","during","before","after",
+  "against","along","across","behind","beyond","beside",
+  "within","without","about","around","toward","towards",
+  "because","though","although","while","whereas","unless","until","since",
+  "nor","for","than","as","like",
+  "do","does","did","done","doing","have","has","had","having",
+  "would","shall","should","can","could","may","might","must","ought",
+  "just","only","even","also","too","very"
+]);
+
+// ---------- Theme ----------
+function applyTheme(theme) {
+  const html = document.documentElement;
+  if (theme === "system") {
+    html.removeAttribute("data-theme");
+  } else {
+    html.setAttribute("data-theme", theme);
+  }
+  document.querySelectorAll(".theme-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.theme === theme);
+  });
+}
+
+function initTheme() {
+  const saved = localStorage.getItem("emuo24-theme") || "system";
+  applyTheme(saved);
+
+  document.querySelectorAll(".theme-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const t = btn.dataset.theme;
+      localStorage.setItem("emuo24-theme", t);
+      applyTheme(t);
+    });
+  });
+
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+    const saved = localStorage.getItem("emuo24-theme") || "system";
+    if (saved === "system") applyTheme("system");
+  });
+}
+
+// ---------- Dictionary ----------
+async function loadDict() {
+  try {
+    const res = await fetch("core.json");
+    if (!res.ok) throw new Error("no dict");
+    const data = await res.json();
+    for (const [word, code] of Object.entries(data)) {
+      if (word.startsWith("__")) {
+        reverseDict[code] = word.slice(2);
+      } else {
+        dict[word] = code;
+        reverseDict[code] = word;
+      }
+    }
+    console.log("Loaded", Object.keys(dict).length, "words");
+  } catch (e) {
+    console.warn("Dictionary not loaded, using reserved only");
+  }
+}
+
+function toLM(text) {
+  const tokens = text.toLowerCase().match(/[a-z]+|\d+/g) || [];
+  const out = [];
+  for (const tok of tokens) {
+    if (/^\d+$/.test(tok)) {
+      out.push(tok.split("").map(d => DIGITS[d] || `[${d}]`).join(" "));
+      continue;
+    }
+    if (LOGIC[tok]) { out.push(LOGIC[tok]); continue; }
+    if (TENSE[tok]) { out.push(TENSE[tok]); continue; }
+    if (STOP.has(tok)) continue;
+    if (dict[tok]) out.push(dict[tok]);
+    else out.push(`[${tok}]`);
+  }
+  return out.join(" ");
+}
+
+function toEN(text) {
+  const words = text.toLowerCase().split(/\s+/);
+  const out = [];
+  for (const w of words) {
+    const clean = w.replace(/[^a-z]/g, "");
+    if (!clean) continue;
+    if (reverseDict[clean]) out.push(reverseDict[clean]);
+    else out.push(`[${clean}]`);
+  }
+  return out.join(" ");
+}
+
+function update() {
+  const input = document.getElementById("input").value;
+  const output = document.getElementById("output");
+  if (!input.trim()) { output.textContent = "—"; return; }
+  output.textContent = mode === "en" ? toLM(input) : toEN(input);
+}
+
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    mode = tab.dataset.mode;
+    document.getElementById("input").placeholder =
+      mode === "en" ? "Type English..." : "Type emuo24...";
+    update();
+  });
+});
+
+document.getElementById("input").addEventListener("input", update);
+
+initTheme();
+loadDict().then(update);
+</script>
+
+</body>
+</html>
