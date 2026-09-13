@@ -749,23 +749,32 @@ function translateNode(node) {
     if (["CODE", "PRE", "SCRIPT", "STYLE", "BUTTON"].includes(tag)) return;
     if (node.parentElement.dataset.translated === "1") return;
 
-    const tokens = text.toLowerCase().match(/[a-z]+|\d+/g) || [];
+    const tokens = text.match(/[a-zA-Z]+|\d+|[.,!?;:—–-]/g) || [];
     if (!tokens.length) return;
 
     const out = [];
     for (const tok of tokens) {
+      // Punctuation: keep as-is
+      if (/^[.,!?;:—–-]$/.test(tok)) {
+        out.push(tok);
+        continue;
+      }
+      // Digits
       if (/^\d+$/.test(tok)) {
         out.push(tok.split("").map(d => DIGITS[d] || d).join(" "));
         continue;
       }
-      if (PRONOUNS[tok]) { out.push(PRONOUNS[tok]); continue; }
-      if (LOGIC[tok]) { out.push(LOGIC[tok]); continue; }
-      if (TENSE[tok]) { out.push(TENSE[tok]); continue; }
-      if (STOP.has(tok)) continue;
-      if (dict[tok]) out.push(dict[tok]);
+      // Words
+      const word = tok.toLowerCase();
+      if (PRONOUNS[word]) { out.push(PRONOUNS[word]); continue; }
+      if (LOGIC[word]) { out.push(LOGIC[word]); continue; }
+      if (TENSE[word]) { out.push(TENSE[word]); continue; }
+      if (STOP.has(word)) continue;
+      if (dict[word]) out.push(dict[word]);
       else out.push(tok);
     }
-    const translated = out.join(" ");
+    // Rejoin: no space before punctuation
+    const translated = out.join(" ").replace(/ ([.,!?;:—–-])/g, "$1");
 
     if (!node.parentElement.dataset.originalText) {
       node.parentElement.dataset.originalText = node.textContent;
