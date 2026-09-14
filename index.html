@@ -672,6 +672,11 @@ const DIGITS = {
   "5": "ay", "6": "ap", "7": "at", "8": "ak", "9": "as"
 };
 
+const NUMBER_WORDS = {
+  "zero": "aa", "one": "ae", "two": "ai", "three": "ao", "four": "au",
+  "five": "ay", "six": "ap", "seven": "at", "eight": "ak", "nine": "as"
+};
+
 const STOP = new Set([
   "a","an","the","of","to","in","on","at","by","with","from",
   "into","onto","upon","over","under","above","below",
@@ -763,6 +768,7 @@ function toLM(text) {
       out.push(tok.split("").map(d => DIGITS[d] || `[${d}]`).join(" "));
       continue;
     }
+    if (NUMBER_WORDS[tok]) { out.push(NUMBER_WORDS[tok]); continue; }
     if (PRONOUNS[tok]) { out.push(PRONOUNS[tok]); continue; }
     if (LOGIC[tok]) { out.push(LOGIC[tok]); continue; }
     if (TENSE[tok]) { out.push(TENSE[tok]); continue; }
@@ -868,6 +874,7 @@ function translateNode(node) {
       }
       // Words
       const word = tok.toLowerCase();
+      if (NUMBER_WORDS[word]) { out.push(NUMBER_WORDS[word]); continue; }
       if (PRONOUNS[word]) { out.push(PRONOUNS[word]); continue; }
       if (LOGIC[word]) { out.push(LOGIC[word]); continue; }
       if (TENSE[word]) { out.push(TENSE[word]); continue; }
